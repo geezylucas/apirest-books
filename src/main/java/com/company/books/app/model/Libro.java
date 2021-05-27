@@ -1,24 +1,25 @@
 package com.company.books.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Entity
-@Table(name = "categorias")
-public class Categoria implements Serializable {
+@Table(name = "libros")
+public class Libro implements Serializable {
 
-    private static final long serialVersionUID = -6034407532025467527L;
+    private static final long serialVersionUID = -1358300140421530704L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String descripcion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Categoria categoria;
 
     public Long getId() {
         return id;
@@ -44,4 +45,11 @@ public class Categoria implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 }

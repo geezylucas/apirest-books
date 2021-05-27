@@ -19,43 +19,38 @@ import com.company.books.app.service.ICategoriaService;
 @RequestMapping("/v1")
 public class CategoriaRestController {
 
-	@Autowired
-	private ICategoriaService categoriaService;
+    @Autowired
+    private ICategoriaService categoriaService;
 
-	@GetMapping("/categorias")
-	public ResponseEntity<CategoriaResponseRest> consultarCategorias() {
-		ResponseEntity<CategoriaResponseRest> response = categoriaService.buscarCategorias();
+    @GetMapping("/categorias")
+    public ResponseEntity<CategoriaResponseRest> consultarCategorias() {
 
-		return response;
-	}
+        return categoriaService.buscarCategorias();
+    }
 
-	@GetMapping("/categorias/{id}")
-	public ResponseEntity<CategoriaResponseRest> consultarCategoriasPorId(@PathVariable Long id) {
-		ResponseEntity<CategoriaResponseRest> response = categoriaService.buscarCategoriasPorId(id);
+    @GetMapping("/categorias/{id}")
+    public ResponseEntity<CategoriaResponseRest> consultarCategoriasPorId(@PathVariable Long id) {
 
-		return response;
-	}
+        return categoriaService.buscarCategoriasPorId(id);
+    }
 
-	@PostMapping("/categorias")
-	public ResponseEntity<CategoriaResponseRest> creatCategoria(@RequestBody Categoria newCategoria) {
-		ResponseEntity<CategoriaResponseRest> response = categoriaService.guardarCategoria(newCategoria);
+    @PostMapping("/categorias")
+    public ResponseEntity<CategoriaResponseRest> creatCategoria(@RequestBody Categoria newCategoria) {
 
-		return response;
-	}
+        return categoriaService.guardarCategoria(newCategoria);
+    }
 
-	@PutMapping("/categorias/{id}")
-	public ResponseEntity<CategoriaResponseRest> editarCategoria(@PathVariable Long id,
-			@RequestBody Categoria newCategoria) {
-		ResponseEntity<CategoriaResponseRest> response = categoriaService.actualizarCategoria(id, newCategoria);
+    @PutMapping("/categorias/{id}")
+    public ResponseEntity<CategoriaResponseRest> editarCategoria(@PathVariable Long id,
+                                                                 @RequestBody Categoria newCategoria) {
 
-		return response;
-	}
+        return categoriaService.actualizarCategoria(id, newCategoria);
+    }
 
-	@DeleteMapping("/categorias/{id}")
-	public ResponseEntity<CategoriaResponseRest> removerCategorias(@PathVariable Long id) {
-		ResponseEntity<CategoriaResponseRest> response = categoriaService.eliminarCategoria(id);
+    @DeleteMapping("/categorias/{id}")
+    public ResponseEntity<CategoriaResponseRest> removerCategorias(@PathVariable Long id) {
 
-		return response;
-	}
+        return categoriaService.eliminarCategoria(id);
+    }
 
 }
