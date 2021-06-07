@@ -2,9 +2,9 @@ package com.company.books.app.service;
 
 import com.company.books.app.model.Usuario;
 import com.company.books.app.model.dao.IUsuarioDao;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,12 +19,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioServiceImpl.class);
 
-    @Autowired
-    private IUsuarioDao usuarioDao;
+    private final IUsuarioDao usuarioDao;
 
     @Override
     @Transactional(readOnly = true)

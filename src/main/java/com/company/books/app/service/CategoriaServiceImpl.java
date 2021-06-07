@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,12 +17,12 @@ import com.company.books.app.model.dao.ICategoriaDao;
 import com.company.books.app.response.CategoriaResponseRest;
 
 @Service
+@RequiredArgsConstructor
 public class CategoriaServiceImpl implements ICategoriaService {
 
     private static final Logger log = LoggerFactory.getLogger(CategoriaServiceImpl.class);
 
-    @Autowired
-    private ICategoriaDao categoriaDao;
+    private final ICategoriaDao categoriaDao;
 
     @Override
     @Transactional(readOnly = true)

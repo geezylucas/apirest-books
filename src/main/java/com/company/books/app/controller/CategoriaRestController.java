@@ -1,6 +1,6 @@
 package com.company.books.app.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,10 @@ import com.company.books.app.service.ICategoriaService;
 
 @RestController
 @RequestMapping("/v1")
+@RequiredArgsConstructor
 public class CategoriaRestController {
 
-    @Autowired
-    private ICategoriaService categoriaService;
+    private final ICategoriaService categoriaService;
 
     @GetMapping("/categorias")
     public ResponseEntity<CategoriaResponseRest> consultarCategorias() {

@@ -3,16 +3,16 @@ package com.company.books.app.controller;
 import com.company.books.app.model.Libro;
 import com.company.books.app.response.LibroResponseRest;
 import com.company.books.app.service.ILibroService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1")
+@RequiredArgsConstructor
 public class LibroRestController {
 
-    @Autowired
-    private ILibroService libroService;
+    private final ILibroService libroService;
 
     @GetMapping("/libros")
     public ResponseEntity<LibroResponseRest> consultarLibros() {

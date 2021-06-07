@@ -1,5 +1,6 @@
 package com.company.books.app.auth;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-public class ConfigSecurity extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private UserDetailsService usuarioService;
+@RequiredArgsConstructor
+public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final UserDetailsService usuarioService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
