@@ -24,22 +24,29 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     private final ICategoriaDao categoriaDao;
 
+    private static final String RESPUESTA_OK = "Respuesta ok";
+    private static final String RESPUESTA_OK_MESSAGE = "Respuesta exitosa";
+    private static final String RESPUESTA_OK_CODE = "00";
+
+    private static final String RESPUESTA_NOK = "Respuesta nok";
+    private static final String RESPUESTA_NOK_CODE = "-1";
+
     @Override
     @Transactional(readOnly = true)
     public ResponseEntity<CategoriaResponseRest> buscarCategorias() {
         log.info("Inicio método buscarCategorias()");
 
-        CategoriaResponseRest response = new CategoriaResponseRest();
+        var response = new CategoriaResponseRest();
 
         try {
             List<Categoria> categorias = (List<Categoria>) categoriaDao.findAll();
             response.getCategoriaResponse().setCategorias(categorias);
-            response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
+            response.setMetadata(RESPUESTA_OK, RESPUESTA_OK_CODE, RESPUESTA_OK_MESSAGE);
         } catch (Exception e) {
-            log.error("Error al consultar categorias: ", e.getMessage());
+            log.error("Error al consultar categorias: {}", e.getMessage());
             e.getStackTrace();
 
-            response.setMetadata("Respuesta nok", "-1", "Error al consultar categorias");
+            response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Error al consultar categorias");
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -52,7 +59,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public ResponseEntity<CategoriaResponseRest> buscarCategoriasPorId(Long id) {
         log.info("Inicio método buscarCategoriasPorId");
 
-        CategoriaResponseRest response = new CategoriaResponseRest();
+        var response = new CategoriaResponseRest();
         List<Categoria> categorias = new ArrayList<>();
 
         try {
@@ -61,19 +68,19 @@ public class CategoriaServiceImpl implements ICategoriaService {
             if (categoria.isPresent()) {
                 categorias.add(categoria.get());
                 response.getCategoriaResponse().setCategorias(categorias);
-                response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
+                response.setMetadata(RESPUESTA_OK, RESPUESTA_OK_CODE, RESPUESTA_OK_MESSAGE);
             } else {
                 log.error("Error al consultar categoria");
-                response.setMetadata("Respuesta nok", "-1", "Categoria no encontrada");
+                response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Categoria no encontrada");
 
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
 
         } catch (Exception e) {
-            log.error("Error al consultar categoria por id: ", e.getMessage());
+            log.error("Error al consultar categoria por id: {}", e.getMessage());
             e.getStackTrace();
 
-            response.setMetadata("Respuesta nok", "-1", "Error al consultar categoria por Id");
+            response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Error al consultar categoria por Id");
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -86,21 +93,20 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public ResponseEntity<CategoriaResponseRest> guardarCategoria(Categoria newCategoria) {
         log.info("Inicio método guardarCategoria");
 
-        CategoriaResponseRest response = new CategoriaResponseRest();
+        var response = new CategoriaResponseRest();
         List<Categoria> categorias = new ArrayList<>();
 
         try {
-            Categoria categoria = categoriaDao.save(newCategoria);
+            var categoria = categoriaDao.save(newCategoria);
 
             categorias.add(categoria);
             response.getCategoriaResponse().setCategorias(categorias);
-            response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
-
+            response.setMetadata(RESPUESTA_OK, RESPUESTA_OK_CODE, RESPUESTA_OK_MESSAGE);
         } catch (Exception e) {
-            log.error("Error al guardar categoria: ", e.getMessage());
+            log.error("Error al guardar categoria: {}", e.getMessage());
             e.getStackTrace();
 
-            response.setMetadata("Respuesta nok", "-1", "Error al guardar categorias");
+            response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Error al guardar categorias");
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -113,33 +119,31 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public ResponseEntity<CategoriaResponseRest> actualizarCategoria(Long id, Categoria newCategoria) {
         log.info("Inicio método actualizarCategoria");
 
-        CategoriaResponseRest response = new CategoriaResponseRest();
+        var response = new CategoriaResponseRest();
         List<Categoria> categorias = new ArrayList<>();
 
         try {
             Optional<Categoria> categoria = categoriaDao.findById(id);
 
             if (categoria.isPresent()) {
-                categoria.map(c -> {
-                    c.setNombre(newCategoria.getNombre());
-                    c.setDescripcion(newCategoria.getDescripcion());
+                categoria.get().setNombre(newCategoria.getNombre());
+                categoria.get().setDescripcion(newCategoria.getDescripcion());
 
-                    return categoriaDao.save(c);
-                });
+                categoriaDao.save(categoria.get());
 
                 categorias.add(categoria.get());
                 response.getCategoriaResponse().setCategorias(categorias);
-                response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
+                response.setMetadata(RESPUESTA_OK, RESPUESTA_OK_CODE, RESPUESTA_OK_MESSAGE);
             } else {
                 log.error("Error al actualizar categoria");
-                response.setMetadata("Respuesta nok", "-1", "Categoria no actualizada");
+                response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Categoria no actualizada");
 
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
 
         } catch (Exception e) {
-            log.error("Error al actualizar categoria: ", e.getMessage());
-            response.setMetadata("Respuesta nok", "-1", "Error al actualizar categoria");
+            log.error("Error al actualizar categoria: {}", e.getMessage());
+            response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Error al actualizar categoria");
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -152,15 +156,15 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public ResponseEntity<CategoriaResponseRest> eliminarCategoria(Long id) {
         log.info("Inicio método eliminarCategoria");
 
-        CategoriaResponseRest response = new CategoriaResponseRest();
+        var response = new CategoriaResponseRest();
 
         try {
             // Eliminamos el registro
             categoriaDao.deleteById(id);
-            response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
+            response.setMetadata(RESPUESTA_OK, RESPUESTA_OK_CODE, RESPUESTA_OK_MESSAGE);
         } catch (Exception e) {
-            log.error("Error al eliminar categoria: ", e.getMessage());
-            response.setMetadata("Respuesta nok", "-1", "Error al eliminar categoria");
+            log.error("Error al eliminar categoria: {}", e.getMessage());
+            response.setMetadata(RESPUESTA_NOK, RESPUESTA_NOK_CODE, "Error al eliminar categoria");
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
